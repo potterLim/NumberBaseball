@@ -7,8 +7,8 @@ namespace BaseballGame
     {
         static void Main(string[] args)
         {
-            int againGame = 1;
-            while (againGame == 1)
+            int playAgain = 1;
+            while (playAgain == 1)
             {
                 Console.WriteLine("+----------------------------------------------------------+");
                 Console.WriteLine("|                       숫자야구 게임                      |");
@@ -21,34 +21,34 @@ namespace BaseballGame
                 Console.WriteLine("|                 숫자가 틀리면 아웃입니다.                |");
                 Console.WriteLine("+----------------------------------------------------------+");
 
-                const int digit = 4;
+                const int numberOfDigits = 4;
                 Random random = new Random();
 
-                List<int> RandomNumbers = new List<int>(digit);
+                List<int> computerNumbers = new List<int>(numberOfDigits);
 
-                int RandomNumber = 0;
+                int randomNumber = 0;
 
-                //creat not overlapping random numbers
-                while (RandomNumbers.Count < digit)
+                //create non-overlapping random numbers
+                while (computerNumbers.Count < numberOfDigits)
                 {
-                    RandomNumber = random.Next(0, 10);
-                    if (RandomNumbers.Contains(RandomNumber) == false)
+                    randomNumber = random.Next(0, 10);
+                    if (computerNumbers.Contains(randomNumber) == false)
                     {
-                        RandomNumbers.Add(RandomNumber);
+                        computerNumbers.Add(randomNumber);
                     }
                 }
 
                 while (true)
                 {
-                    List<int> guesses = new List<int>(digit);
-                    while (guesses.Count < digit)
+                    List<int> userGuesses = new List<int>(numberOfDigits);
+                    while (userGuesses.Count < numberOfDigits)
                     {
-                        Console.WriteLine($"> [{guesses.Count + 1}]번째 자리의 숫자를 입력하세요.");
+                        Console.WriteLine($"> [{userGuesses.Count + 1}]번째 자리의 숫자를 입력하세요.");
 
                         int guess;
-                        bool bSuccess = int.TryParse(Console.ReadLine(), out guess);
+                        bool isNumberValid = int.TryParse(Console.ReadLine(), out guess);
 
-                        if (bSuccess == false)
+                        if (isNumberValid == false)
                         {
                             Console.WriteLine("숫자 외에 다른 값을 입력할 수 없습니다.\n");
                             continue;
@@ -60,53 +60,51 @@ namespace BaseballGame
                             continue;
                         }
 
-                        if (guesses.Contains(guess) == true)
+                        if (userGuesses.Contains(guess) == true)
                         {
                             Console.WriteLine("중복되는 숫자는 입력하실수 없습니다.\n");
                             continue;
                         }
 
-                        guesses.Add(guess);
+                        userGuesses.Add(guess);
                     }
 
                     Console.WriteLine("\n> 공격수가 고른 숫자");
 
-                    foreach (int guess in guesses)
+                    foreach (int guess in userGuesses)
                     {
                         Console.WriteLine(guess);
                     }
 
-                    int strikeCount = 0;
-                    int ballCount = 0;
+                    int strike = 0;
+                    int ball = 0;
 
-                    for (int i = 0; i < digit; i++)
+                    for (int i = 0; i < numberOfDigits; i++)
                     {
-                        if (RandomNumbers[i] == guesses[i])
+                        if (computerNumbers[i] == userGuesses[i])
                         {
-                            strikeCount++;
+                            strike++;
                         }
-
-                        else if (RandomNumbers.Contains(guesses[i]))
+                        else if (computerNumbers.Contains(userGuesses[i]))
                         {
-                            ballCount++;
+                            ball++;
                         }
                     }
 
-                    Console.WriteLine($"strike: {strikeCount}, ball: {ballCount}, out: {digit - strikeCount - ballCount}");
+                    Console.WriteLine($"strike: {strike}, ball: {ball}, out: {numberOfDigits - strike - ball}");
 
-                    if (strikeCount == digit)
+                    if (strike == numberOfDigits)
                     {
-                        Console.WriteLine($"정답: [{RandomNumbers[0]}], [{RandomNumbers[1]}], [{RandomNumbers[2]}], [{RandomNumbers[3]}]");
+                        Console.WriteLine($"정답: [{computerNumbers[0]}], [{computerNumbers[1]}], [{computerNumbers[2]}], [{computerNumbers[3]}]");
                         Console.WriteLine("축하드립니다 게임에서 승리하셨습니다!.");
                         Console.WriteLine("게임을 다시 진행하시겠습니까? 1.다시하기");
-                        bool bSuccess = int.TryParse(Console.ReadLine(), out againGame);
+                        bool isPlayAgainValid = int.TryParse(Console.ReadLine(), out playAgain);
 
-                        if (bSuccess == false)
+                        if (isPlayAgainValid == false)
                         {
                             break;
                         }
-
-                        else if (againGame == 1)
+                        else if (playAgain == 1)
                         {
                             Console.Clear();
                         }
